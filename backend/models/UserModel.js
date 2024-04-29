@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 const bcrypt = require("bcryptjs"); 
+const jwt = require("jsonwebtoken");
 
 const userSchema = mongoose.Schema({
     name: {
@@ -35,12 +36,26 @@ const userSchema = mongoose.Schema({
         type: String,
         maxLength: [250, "Bio cannot be more than 250 characters"],
         default: "Bio"
+    },
+    JsonWebToken: {
+        type: String,
+        maxLength: [250, "Jwt cannot be more than 250 characters"],
     }
 }, {
     timestamps: true
-})
+});
 
+//     User.userSchema.pre("save", async function(next) {
+//     if(!this.isModified("password")) {
+//         return next();
+//     }
 
+//     //hash password
+//     const salt = await bcrypt.genSalt(10)
+//     const hashedPassword = await bcrypt.hash(this.password, salt);
+//     this.password = hashedPassword;
+
+// })
 
 const User = mongoose.model("User", userSchema)
 
