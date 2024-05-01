@@ -88,6 +88,9 @@ const loginUser = asyncHandler( async (req, res) => {
     const passwordIsCorrect = await bcrypt.compare(password, user.password)
 
     const token = generateToken(user._id)
+
+    if (passwordIsCorrect) {
+
     res.cookie("Token", token, {
         path: "/",
         httpOnly: true,
@@ -95,6 +98,7 @@ const loginUser = asyncHandler( async (req, res) => {
         sameSite: "none", 
         secure: true,
     })
+}
 
     if (user && passwordIsCorrect) {
         const {_id, name, email, photo, phone, bio, token} = user;
@@ -114,6 +118,20 @@ const loginUser = asyncHandler( async (req, res) => {
 
 });
 
+
+//Logout User
+const logout = async (req, res) => {
+    res.cookie("Token", "", {
+        path: "/",
+        httpOnly: true,
+        expires: new Date(0),
+        sameSite: "none", 
+        secure: true,
+    })
+    return res.status(200).json({ message: "User has been logged out" })
+};
+
+
 module.exports = {
-    registerUser, loginUser
+    registerUser, loginUser, logoutUser
 };
