@@ -45,17 +45,17 @@ const userSchema = mongoose.Schema({
     timestamps: true
 });
 
-//     User.userSchema.pre("save", async function(next) {
-//     if(!this.isModified("password")) {
-//         return next();
-//     }
+    userSchema.pre("save", async function(next) {
+    if(!this.isModified("password")) {
+        return next();
+    }
 
-//     //hash password
-//     const salt = await bcrypt.genSalt(10)
-//     const hashedPassword = await bcrypt.hash(this.password, salt);
-//     this.password = hashedPassword;
+    //hash password
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(this.password, salt);
+    this.password = hashedPassword;
 
-// })
+})
 
 const User = mongoose.model("User", userSchema)
 
